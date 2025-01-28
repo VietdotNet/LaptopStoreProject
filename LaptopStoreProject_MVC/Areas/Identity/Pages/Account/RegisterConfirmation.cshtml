@@ -1,0 +1,48 @@
+﻿@page "/RegisterConfirm"
+@model RegisterConfirmationModel
+@{
+    ViewData["Title"] = "Xác nhận đăng ký";
+}
+
+<h1>@ViewData["Title"]</h1>
+
+
+@* @if(Model.IsEmailConfirmed)
+{
+    <h1>Email Confirmed</h1>
+    <p>Your email (@Model.Email) has been successfully confirmed. You can now log in to your account.</p>
+} 
+else
+{
+    <p style="color: blue;">
+        Thank you for registering! We've sent an email to <strong>@Model.Email</strong> with a confirmation link.
+        Please check your email to confirm your account...
+    </p>
+}
+
+@if (!string.IsNullOrEmpty(Model.StatusMessage))
+{
+    <div class="alert alert-info">@Model.StatusMessage</div>
+}
+
+@if (!Model.IsEmailConfirmed)
+{
+    <p style="color: red;">If you haven't received the confirmation email or the link expired, you can <a href="/Account/ResendConfirmation">request a new confirmation link here</a>.</p>
+} *@
+
+@* @if (!string.IsNullOrEmpty(Model.Email))
+{
+    <form method="get" asp-page="/Account/RegisterConfirmation">
+        <button type="submit">Resend confirmation email</button>
+    </form>
+} *@
+
+<p style="color: blue;">
+    Cảm ơn bạn đã đăng ký! Chúng tôi đã gửi 1 email đến <strong>@Model.Email</strong> kèm theo link xác nhận.
+    Vui lòng kiểm tra email để xác nhận tài khoản của bạn...
+</p>
+
+
+    
+    
+

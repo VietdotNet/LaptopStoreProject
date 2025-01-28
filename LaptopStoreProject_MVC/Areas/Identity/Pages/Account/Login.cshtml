@@ -1,0 +1,107 @@
+﻿@page "/Login"
+@model LoginModel
+
+@{
+    ViewData["Title"] = "Đăng nhập";
+    var thongBao = TempData["ErrorMessage"];
+}
+
+<h1>@ViewData["Title"]</h1>
+
+
+    @if(TempData.ContainsKey("ErrorMessage"))
+    {
+        <partial name="/Areas/Identity/Pages/Account/_StatusMessage.cshtml" model="thongBao"/>
+    }
+
+
+<div class="row">
+    <div class="col-md-5">
+        <section>
+            <form id="account" method="post">
+                <hr />
+                <div asp-validation-summary="ModelOnly" class="text-danger" role="alert"></div>
+                <div class="form-floating mb-3">
+                    <input asp-for="Input.Email" class="form-control" autocomplete="username" aria-required="true" placeholder="name@example.com" />
+                    <label asp-for="Input.Email" class="form-label">Email</label>
+                    <span asp-validation-for="Input.Email" class="text-danger"></span>
+                </div>
+                <div class="form-floating mb-3">
+                    <input asp-for="Input.Password" class="form-control" autocomplete="current-password" aria-required="true" placeholder="password" />
+                    <label asp-for="Input.Password" class="form-label">Password</label>
+                    <span asp-validation-for="Input.Password" class="text-danger"></span>
+                </div>
+                <div class="checkbox mb-3">
+                    <label asp-for="Input.RememberMe" class="form-label">
+                        <input class="form-check-input" asp-for="Input.RememberMe" />
+                        @Html.DisplayNameFor(m => m.Input.RememberMe)
+                    </label>
+                </div>
+
+                <div>
+                    <button id="login-submit" type="submit" class="w-100 btn btn-lg btn-primary">Đăng nhập</button>
+                </div>
+                <div>
+                    <h6 style="color: red">Lưu ý: Đăng nhập thất bại quá 5 lần tài khoản sẽ bị tạm khoá!</h6>
+                </div>
+                <div>
+                    <p>
+                        <a id="forgot-password" asp-page="./ForgotPassword">Quên mật khẩu</a>
+                    </p>
+                    <p>
+                        <a asp-page="./Register" asp-route-returnUrl="@Model.ReturnUrl">Đăng ký tài khoản</a>
+                    </p>
+                    <p>
+                        <a id="resend-confirmation" asp-page="./ResendEmailConfirmation">Gửi lại email để xác thực</a>
+                    </p>
+                </div>
+            </form>
+        </section>
+    </div>
+
+
+    <div class="col-md-6 col-md-offset-2">
+        <section>
+            <div style="display: flex; align-items: center; text-align: center; margin-top: 4px;">
+                <hr style="flex-grow: 1; border: 0; border-top: 1px solid #ccc; margin: 0 10px;" />
+                <label style="margin: 0;">Hoặc</label>
+                <hr style="flex-grow: 1; border: 0; border-top: 1px solid #ccc; margin: 0 10px;" />
+            </div>
+            @{
+                <form id="external-account" asp-page="./ExternalLogin" asp-route-returnUrl="@Model.ReturnUrl" method="post" class="form-horizontal">
+                    <div>
+                        <p>
+                            @foreach (var provider in Model.ExternalLogins!)
+                            {
+                                <button type="submit" class="btn btn-outline-primary d-flex align-items-center justify-content-center mb-2"
+                                        name="provider" value="@provider.Name"
+                                        title="Đăng nhập bằng tài khoản @provider.DisplayName">
+                                    @if (provider.Name.ToLower() == "google")
+                                    {
+                                        <i class="fab fa-google me-2"></i>
+                                    }
+                                    @* Add more provider-specific icons here if needed *@
+                                    Đăng nhập bằng @provider.DisplayName
+                                </button>
+                            }
+                        </p>
+                    </div>
+                </form>
+            }
+        </section>
+    </div>
+
+</div>
+
+<style>
+    .btn-outline-primary .fab.fa-google {
+        color: #db4437; /* Màu Google */
+    }
+</style>
+
+<!-- Thêm link Font Awesome vào nếu bạn chưa có -->
+<link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet" />
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}
