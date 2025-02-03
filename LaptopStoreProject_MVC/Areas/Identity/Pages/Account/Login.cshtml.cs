@@ -57,6 +57,8 @@ namespace LaptopStoreProject_MVC.Areas.Identity.Pages.Account
         [TempData]
         public string ErrorMessage { get; set; }
 
+        public int count { get; set; }
+
         /// <summary>
         ///     This API supports the ASP.NET Core Identity default UI infrastructure and is not intended to be used
         ///     directly from your code. This API may change or be removed in future releases.
@@ -85,6 +87,8 @@ namespace LaptopStoreProject_MVC.Areas.Identity.Pages.Account
             /// </summary>
             [Display(Name = "Remember me?")]
             public bool RememberMe { get; set; }
+
+           
         }
 
         //Xử lý lỗi
@@ -149,7 +153,7 @@ namespace LaptopStoreProject_MVC.Areas.Identity.Pages.Account
                 else
                 {
                     //Đếm số lần đăng nhập thất bại
-                    int count = user.AccessFailedCount;
+                    count = user.AccessFailedCount;
                     await _userManager.UpdateAsync(user); //Cập nhật vào db
 
                     ModelState.AddModelError(string.Empty, "Thông tin đăng nhập không hợp lệ!");

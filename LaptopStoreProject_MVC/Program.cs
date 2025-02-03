@@ -31,7 +31,7 @@ namespace LaptopStoreProject_MVC
                     var result = builder.Configuration.GetSection("Authentication:Facebook");
                     options.AppId = result["AppId"];
                     options.AppSecret = result["AppSecret"];
-                    options.CallbackPath = "/loginWithFb";
+                    options.CallbackPath = "/signInWFacebook";
                 });
             // Đăng ký dịch vụ gửi email
             builder.Services.AddTransient<IEmailSender, SendMailService>();

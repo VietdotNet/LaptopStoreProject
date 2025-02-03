@@ -1,4 +1,4 @@
-using LaptopStoreProject_MVC.Models;
+﻿using LaptopStoreProject_MVC.Models;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using System.Diagnostics;
@@ -20,7 +20,6 @@ namespace LaptopStoreProject_MVC.Controllers
         {
             return View();
         }
-
 
         public IActionResult Privacy()
         {

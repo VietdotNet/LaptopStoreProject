@@ -41,9 +41,12 @@
                 <div>
                     <button id="login-submit" type="submit" class="w-100 btn btn-lg btn-primary">Đăng nhập</button>
                 </div>
-                <div>
-                    <h6 style="color: red">Lưu ý: Đăng nhập thất bại quá 5 lần tài khoản sẽ bị tạm khoá!</h6>
-                </div>
+                @if(@Model.count != 0)
+                {
+                    <div>
+                        <h6 style="color: red">Lưu ý: Đăng nhập thất bại quá 5 lần tài khoản sẽ bị tạm khoá!</h6>
+                    </div>
+                }
                 <div>
                     <p>
                         <a id="forgot-password" asp-page="./ForgotPassword">Quên mật khẩu</a>
@@ -70,7 +73,7 @@
             @{
                 <form id="external-account" asp-page="./ExternalLogin" asp-route-returnUrl="@Model.ReturnUrl" method="post" class="form-horizontal">
                     <div>
-                        <p>
+                        <p class="d-flex flex-row gap-2">
                             @foreach (var provider in Model.ExternalLogins!)
                             {
                                 <button type="submit" class="btn btn-outline-primary d-flex align-items-center justify-content-center mb-2"
@@ -80,7 +83,10 @@
                                     {
                                         <i class="fab fa-google me-2"></i>
                                     }
-                                    @* Add more provider-specific icons here if needed *@
+                                    @if (provider.Name.ToLower() == "facebook")
+                                    {
+                                        <i class="fab fa-facebook me-2"></i>
+                                    }
                                     Đăng nhập bằng @provider.DisplayName
                                 </button>
                             }
