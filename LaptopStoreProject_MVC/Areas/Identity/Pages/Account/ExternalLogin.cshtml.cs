@@ -113,28 +113,6 @@ namespace LaptopStoreProject_MVC.Areas.Identity.Pages.Account
                 return RedirectToPage("./Login", new { ReturnUrl = returnUrl });
             }
 
-            //bắt đầy từ đây
-
-            // Lấy email từ thông tin đăng nhập bên ngoài
-            //var email = info.Principal.FindFirstValue(ClaimTypes.Email);
-            //if (email == null)
-            //{
-            //    ErrorMessage = "Không thể lấy email từ nhà cung cấp bên ngoài.";
-            //    return RedirectToPage("./Login", new { ReturnUrl = returnUrl });
-            //}
-
-            //// Kiểm tra xem email có tồn tại trong hệ thống chưa
-            //var existingUser = await _userManager.FindByEmailAsync(email);
-            //if (existingUser == null)
-            //{
-            //    // Điều hướng đến trang xác thực email
-            //    TempData["ExternalLoginProvider"] = info.LoginProvider;
-            //    TempData["Email"] = email;
-            //    return RedirectToPage("./RegisterConfirm", new { ReturnUrl = returnUrl });
-            //}
-
-            //kết thúc
-
             // Sign in the user with this external login provider if the user already has a login.
             var result = await _signInManager.ExternalLoginSignInAsync(info.LoginProvider, info.ProviderKey, isPersistent: false, bypassTwoFactor: true);
             if (result.Succeeded)
@@ -162,78 +140,6 @@ namespace LaptopStoreProject_MVC.Areas.Identity.Pages.Account
             }
         }
 
-        //public async Task<IActionResult> OnGetCallbackAsync(string returnUrl = null, string remoteError = null)
-        //{
-        //    returnUrl = returnUrl ?? Url.Content("~/");
-
-        //    if (remoteError != null)
-        //    {
-        //        ErrorMessage = $"Lỗi từ nhà cung cấp bên ngoài: {remoteError}";
-        //        return RedirectToPage("./Login", new { ReturnUrl = returnUrl });
-        //    }
-
-        //    var info = await _signInManager.GetExternalLoginInfoAsync();
-        //    if (info == null)
-        //    {
-        //        ErrorMessage = "Có lỗi khi tải thông tin đăng nhập bên ngoài.";
-        //        return RedirectToPage("./Login", new { ReturnUrl = returnUrl });
-        //    }
-
-        //    // Lấy email từ thông tin đăng nhập bên ngoài
-        //    var email = info.Principal.FindFirstValue(ClaimTypes.Email);
-        //    if (email == null)
-        //    {
-        //        ErrorMessage = "Không thể lấy email từ nhà cung cấp bên ngoài.";
-        //        return RedirectToPage("./Login", new { ReturnUrl = returnUrl });
-        //    }
-
-        //    // Kiểm tra xem email có tồn tại trong hệ thống chưa
-        //    var existingUser = await _userManager.FindByEmailAsync(email);
-        //    if (existingUser == null)
-        //    {
-        //        // Nếu người dùng chưa tồn tại trong hệ thống, điều hướng đến trang xác thực email
-        //        TempData["ExternalLoginProvider"] = info.LoginProvider;
-        //        TempData["Email"] = email;
-        //        return RedirectToPage("./RegisterConfirmation", new { ReturnUrl = returnUrl });
-        //    }
-
-        //    // Nếu người dùng đã tồn tại, kiểm tra xem họ có đăng nhập qua provider bên ngoài này chưa
-        //    var logins = await _userManager.GetLoginsAsync(existingUser);
-        //    var isGmailLinked = logins.Any(login => login.LoginProvider == "Google"); // Tên provider là "Google"
-        //    if (!isGmailLinked)
-        //    {
-        //        // Nếu email đã tồn tại nhưng không đăng nhập qua Gmail, chuyển hướng lại trang đăng nhập với provider
-        //        return Redirect(Url.Action("Callback", "ExternalLogin", new { returnUrl }));
-        //    }
-
-        //    // Nếu email đã tồn tại và liên kết với provider bên ngoài (Gmail), thực hiện đăng nhập
-        //    var result = await _signInManager.ExternalLoginSignInAsync(info.LoginProvider, info.ProviderKey, isPersistent: false, bypassTwoFactor: true);
-        //    if (result.Succeeded)
-        //    {
-        //        _logger.LogInformation("{Name} logged in with {LoginProvider} provider.", info.Principal.Identity.Name, info.LoginProvider);
-        //        return LocalRedirect(returnUrl);
-        //    }
-        //    if (result.IsLockedOut)
-        //    {
-        //        return RedirectToPage("./Lockout");
-        //    }
-        //    else
-        //    {
-        //        // Nếu người dùng không có tài khoản, yêu cầu người dùng tạo tài khoản
-        //        ReturnUrl = returnUrl;
-        //        ProviderDisplayName = info.ProviderDisplayName;
-        //        if (info.Principal.HasClaim(c => c.Type == ClaimTypes.Email))
-        //        {
-        //            Input = new InputModel
-        //            {
-        //                Email = info.Principal.FindFirstValue(ClaimTypes.Email)
-        //            };
-        //        }
-        //        return Page();
-        //    }
-        //}
-
-
         //asp-page-handler = "Confirmation" vs method = "post"
         public async Task<IActionResult> OnPostConfirmationAsync(string returnUrl = null)
         {
@@ -248,13 +154,6 @@ namespace LaptopStoreProject_MVC.Areas.Identity.Pages.Account
 
             if (ModelState.IsValid)
             {
-                //var registeredEmail = _userManager.FindByEmailAsync(Input.Email);
-                //string externalEmail = null;
-                //if(info.Principal.HasClaim(c => c.Type == ClaimTypes.Email))
-                //{
-                //    externalEmail = info.Principal.FindFirstValue(ClaimTypes.Email);
-                //}
-
                 var user = CreateUser();
 
                 // Gán các giá trị cho user vừa tạo
@@ -270,23 +169,24 @@ namespace LaptopStoreProject_MVC.Areas.Identity.Pages.Account
                     {
                         _logger.LogInformation("User created an account using {Name} provider.", info.LoginProvider);
 
-                        var userId = await _userManager.GetUserIdAsync(user);
+                        //var userId = await _userManager.GetUserIdAsync(user);
                         var code = await _userManager.GenerateEmailConfirmationTokenAsync(user);
-                        code = WebEncoders.Base64UrlEncode(Encoding.UTF8.GetBytes(code));
-                        var callbackUrl = Url.Page(
-                            "/Account/ConfirmEmail",
-                            pageHandler: null,
-                            values: new { area = "Identity", userId = userId, code = code },
-                            protocol: Request.Scheme);
+                        await _userManager.ConfirmEmailAsync(user, code);
+                        //code = WebEncoders.Base64UrlEncode(Encoding.UTF8.GetBytes(code));
+                        //var callbackUrl = Url.Page(
+                        //    "/Account/ConfirmEmail",
+                        //    pageHandler: null,
+                        //    values: new { area = "Identity", userId = userId, code = code },
+                        //    protocol: Request.Scheme);
 
-                        await _emailSender.SendEmailAsync(Input.Email, "Confirm your email",
-                            $"Please confirm your account by <a href='{HtmlEncoder.Default.Encode(callbackUrl)}'>clicking here</a>.");
+                        //await _emailSender.SendEmailAsync(Input.Email, "Confirm your email",
+                        //    $"Please confirm your account by <a href='{HtmlEncoder.Default.Encode(callbackUrl)}'>clicking here</a>.");
 
-                        // If account confirmation is required, we need to show the link if we don't have a real email sender
-                        if (_userManager.Options.SignIn.RequireConfirmedAccount)
-                        {
-                            return RedirectToPage("./RegisterConfirmation", new { Email = Input.Email });
-                        }
+                        //If account confirmation is required, we need to show the link if we don't have a real email sender
+                        //if (_userManager.Options.SignIn.RequireConfirmedAccount)
+                        //{
+                        //    return RedirectToPage("./RegisterConfirmation", new { Email = Input.Email });
+                        //}
 
                         await _signInManager.SignInAsync(user, isPersistent: false, info.LoginProvider);
                         return LocalRedirect(returnUrl);
