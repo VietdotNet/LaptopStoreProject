@@ -117,6 +117,7 @@ namespace LaptopStoreProject_MVC.Areas.Identity.Pages.Account
             var result = await _signInManager.ExternalLoginSignInAsync(info.LoginProvider, info.ProviderKey, isPersistent: false, bypassTwoFactor: true);
             //var email = info.Principal.FindFirstValue(ClaimTypes.Email);
             //_logger.LogInformation("{Name} logged in with {LoginProvider} provider with {Email}.", info.Principal.Identity.Name, info.LoginProvider, email);
+            
             if (result.Succeeded)
             {
                 _logger.LogInformation("{Name} logged in with {LoginProvider} provider.", info.Principal.Identity.Name, info.LoginProvider);
@@ -190,7 +191,15 @@ namespace LaptopStoreProject_MVC.Areas.Identity.Pages.Account
                         //    return RedirectToPage("./RegisterConfirmation", new { Email = Input.Email });
                         //}
 
+                        var claims = new List<Claim>
+                {
+                        new Claim("Provider", info.LoginProvider),
+                        new Claim("Name", info.Principal.Identity.Name)
+                        
+                };
+                        await _userManager.AddClaimsAsync(user, claims);
                         await _signInManager.SignInAsync(user, isPersistent: false, info.LoginProvider);
+                   
                         return LocalRedirect(returnUrl);
                     }
                 }

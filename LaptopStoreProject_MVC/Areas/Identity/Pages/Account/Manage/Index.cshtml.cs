@@ -63,8 +63,9 @@ namespace LaptopStoreProject_MVC.Areas.Identity.Pages.Account.Manage
 
         private async Task LoadAsync(AppUser user)
         {
-               var userName = await _userManager.GetUserNameAsync(user);
-               var phoneNumber = await _userManager.GetPhoneNumberAsync(user);
+               //var userName = await _userManager.GetUserNameAsync(user);
+            var userName = User.FindFirst("Name")?.Value ?? _userManager.GetUserName(User);
+            var phoneNumber = await _userManager.GetPhoneNumberAsync(user);
 
             Username = userName;
 

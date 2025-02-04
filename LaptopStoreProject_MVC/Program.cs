@@ -64,7 +64,7 @@ namespace LaptopStoreProject_MVC
 
                 //Cấu hình login 
                 /* options.SignIn.RequireConfirmedPhoneNumber = true;*/ //Xác thực sdt
-                options.SignIn.RequireConfirmedEmail = true; //Xác thức email
+                options.SignIn.RequireConfirmedEmail = true; //Xác thực email
                 options.SignIn.RequireConfirmedAccount = true;
             });
 
