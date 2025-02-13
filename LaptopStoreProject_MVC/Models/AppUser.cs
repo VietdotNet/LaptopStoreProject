@@ -9,5 +9,8 @@ namespace LaptopStoreProject_MVC.Models
         [Column(TypeName = "nvarchar")]
         [StringLength(100)]
         public string? Address { get; set; }
+
+        [DataType(DataType.Date)]
+        public DateTime Dob { get; set; }
     }
 }
