@@ -49,7 +49,7 @@ namespace LaptopStoreProject_MVC.Areas.Identity.Pages.Account
             var result = await _userManager.ChangeEmailAsync(user, email, code);
             if (!result.Succeeded)
             {
-                StatusMessage = "Error changing email.";
+                StatusMessage = "Lỗi thay đổi email! Email của bạn có thể đã được đăng ký với hệ thống trước đó. Vui lòng kiểm tra lại hoặc thay đổi email khác!";
                 return Page();
             }
 
@@ -58,12 +58,12 @@ namespace LaptopStoreProject_MVC.Areas.Identity.Pages.Account
             var setUserNameResult = await _userManager.SetUserNameAsync(user, email);
             if (!setUserNameResult.Succeeded)
             {
-                StatusMessage = "Error changing user name.";
+                StatusMessage = "Lỗi thay đổi tên người dùng!";
                 return Page();
             }
 
             await _signInManager.RefreshSignInAsync(user);
-            StatusMessage = "Thank you for confirming your email change.";
+            StatusMessage = "Bạn đã thay đổi email thành công!";
             return Page();
         }
     }

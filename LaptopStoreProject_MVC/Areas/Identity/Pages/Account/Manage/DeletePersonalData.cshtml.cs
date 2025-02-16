@@ -48,6 +48,7 @@ namespace LaptopStoreProject_MVC.Areas.Identity.Pages.Account.Manage
             /// </summary>
             [Required]
             [DataType(DataType.Password)]
+            [Display(Name = "Nhập mật khẩu")]
             public string Password { get; set; }
         }
 
@@ -82,7 +83,7 @@ namespace LaptopStoreProject_MVC.Areas.Identity.Pages.Account.Manage
             {
                 if (!await _userManager.CheckPasswordAsync(user, Input.Password))
                 {
-                    ModelState.AddModelError(string.Empty, "Incorrect password.");
+                    ModelState.AddModelError(string.Empty, "Sai mật khẩu");
                     return Page();
                 }
             }

@@ -11,6 +11,6 @@ namespace LaptopStoreProject_MVC.Models
         public string? Address { get; set; }
 
         [DataType(DataType.Date)]
-        public DateTime Dob { get; set; }
+        public DateOnly? Dob { get; set; }
     }
 }
